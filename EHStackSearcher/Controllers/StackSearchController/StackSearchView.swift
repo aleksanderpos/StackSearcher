@@ -10,20 +10,20 @@ import UIKit
 import SnapKit
 
 class StackSearchView: UIView {
-
+    
     let resultTableView = UITableView()
     let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
-
+    
     func setupView() {
         addSubview(resultTableView)
         addSubview(activityIndicator)
-
+        
         resultTableView.separatorColor = UIColor.orange
         resultTableView.tableFooterView = UIView(frame: .zero)
         resultTableView.snp.makeConstraints { (make) in
             make.edges.equalToSuperview()
         }
-
+        
         activityIndicator.snp.makeConstraints { (make) in
             make.centerX.centerY.equalToSuperview()
         }
@@ -32,5 +32,5 @@ class StackSearchView: UIView {
         activityIndicator.layer.masksToBounds = false
         activityIndicator.layer.cornerRadius = 6.0
     }
-
+    
 }

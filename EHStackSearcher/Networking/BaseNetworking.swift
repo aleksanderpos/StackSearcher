@@ -19,16 +19,16 @@ struct Endpoints {
 }
 
 class BaseNetworking {
-
+    
     private var task: URLSessionTask?
-
+    
     func performRequest(with url: URL, completion: @escaping BaseNetworkingCompletionHandler) {
         let config = URLSessionConfiguration.default
         let session = URLSession(configuration: config)
         task?.cancel()
         var urlRequest = URLRequest(url: url, cachePolicy: .reloadIgnoringLocalAndRemoteCacheData, timeoutInterval: 12.0)
         urlRequest.httpMethod = HTTPMethod.get.rawValue
-
+        
         task = session.dataTask(with: urlRequest, completionHandler: { data,response,error in
             if let data = data {
                 completion(JSON(data), nil)

@@ -17,14 +17,14 @@ protocol StackSearchViewModelProtocol {
     func getAnswer(for answerId: String, completion: @escaping StackAnswerCompletionHandler)
 }
 class StackSearchViewModel: StackSearchViewModelProtocol {
-
+    
     var questions: [StackQuestion] = []
     private let stackRepository: StackRepository
-
+    
     init(stackRepository: StackRepository) {
         self.stackRepository = stackRepository
     }
-
+    
     func getQuestions(by query: String, completion: @escaping StackQuestionsCompletionHandler) {
         stackRepository.getStackQuestion(query: query) { (stackQuestions, error) in
             if let stackQuestions = stackQuestions {
@@ -33,11 +33,11 @@ class StackSearchViewModel: StackSearchViewModelProtocol {
             }
         }
     }
-
+    
     func getAnswer(for answerId: String, completion: @escaping StackAnswerCompletionHandler) {
         stackRepository.getStackAnswer(answerId: answerId) { (stackAnswer, error) in
             completion(stackAnswer, error)
         }
     }
-
+    
 }

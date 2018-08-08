@@ -16,15 +16,15 @@ protocol StackRepositoryProtocol: class {
 }
 
 class StackRepository: StackRepositoryProtocol {
-
+    
     private var stackNetworking: StackNetworking
     private var stackSerializer: StackSerializer
-
+    
     init(networking: StackNetworking, serializer: StackSerializer) {
         self.stackNetworking = networking
         self.stackSerializer = serializer
     }
-
+    
     func getStackQuestion(query: String, completion: @escaping StackQuestionsRepositoryCompletionHandler) {
         stackNetworking.fetchStackQuestion(query: query) { (json, error) in
             guard let json = json else {
@@ -34,7 +34,7 @@ class StackRepository: StackRepositoryProtocol {
             completion(self.stackSerializer.unserializeQuestions(json), error)
         }
     }
-
+    
     func getStackAnswer(answerId: String, completion: @escaping StackAnswerRepositoryCompletionHandler) {
         stackNetworking.fetchStackAnswer(answerId: answerId) { (json, error) in
             guard let json = json else {
@@ -44,7 +44,7 @@ class StackRepository: StackRepositoryProtocol {
             completion(self.stackSerializer.unserializeAnswer(json), error)
         }
     }
-
+    
 }
 
 

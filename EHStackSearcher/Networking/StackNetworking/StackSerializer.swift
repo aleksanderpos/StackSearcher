@@ -17,7 +17,7 @@ struct StackSerializerParameters {
         static let isAnswered = "is_answered"
         static let answerId = "accepted_answer_id"
     }
-
+    
     struct StackAnswerParameters {
         static let body = "body"
     }

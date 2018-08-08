@@ -44,7 +44,7 @@ class StackSearchViewController: UIViewController {
         navigationItem.hidesSearchBarWhenScrolling = false
         navigationItem.searchController = searchController
     }
-
+    
     private func openAnswer(for question: StackQuestion) {
         DispatchQueue.main.async {
             self.mainView.activityIndicator.stopAnimating()
@@ -68,7 +68,7 @@ extension StackSearchViewController: UITableViewDelegate, UITableViewDataSource 
         cell.textLabel?.numberOfLines = 0
         cell.preservesSuperviewLayoutMargins = false
         cell.separatorInset = UIEdgeInsets.init(top: 0, left: 16, bottom: 0, right: 16)
-
+        
         if let _ = viewModel.questions[indexPath.row].answerId {
             cell.textLabel?.textColor = UIColor.black
         }
@@ -77,7 +77,7 @@ extension StackSearchViewController: UITableViewDelegate, UITableViewDataSource 
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let selectedQuestion = viewModel.questions[indexPath.row]
-        if let _ = selectedQuestion.isAnswered {
+        if let isAnswered = selectedQuestion.isAnswered, isAnswered {
             if let _ = selectedQuestion.answer {
                 self.openAnswer(for: selectedQuestion)
             } else if let answerId = selectedQuestion.answerId {
@@ -86,8 +86,6 @@ extension StackSearchViewController: UITableViewDelegate, UITableViewDataSource 
                     self.viewModel.questions[indexPath.row].answer = stackAnswer
                     self.openAnswer(for: self.viewModel.questions[indexPath.row])
                 }
-            } else {
-                openAnswer(for: selectedQuestion)
             }
         } else {
             openAnswer(for: selectedQuestion)
@@ -96,7 +94,7 @@ extension StackSearchViewController: UITableViewDelegate, UITableViewDataSource 
 }
 
 extension StackSearchViewController: UISearchBarDelegate {
-
+    
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         if let searchQuery = searchBar.text {
             if !searchQuery.isEmpty {
@@ -112,5 +110,5 @@ extension StackSearchViewController: UISearchBarDelegate {
             }
         }
     }
-
+    
 }

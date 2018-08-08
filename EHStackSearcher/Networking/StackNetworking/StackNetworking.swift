@@ -14,6 +14,7 @@ protocol StackNetworkingProtocol: class {
 }
 
 struct StackEndpoints {
+    //I considered breaking this into abstract parameter handling mechanism that would assemble query from params and values, but since I use only two queries, I abandoned that idea.
     static let questionQueryURL = "/2.2/search/advanced?order=desc&sort=activity&title={query}&site=stackoverflow&filter=!9Z(-wwYGT"
     static let answerQueryURL = "/2.2/answers/{id}?order=desc&sort=activity&site=stackoverflow&filter=!9Z(-wzu0T"
 }
@@ -40,6 +41,4 @@ class StackNetworking: BaseNetworking, StackNetworkingProtocol {
             completion(json,error)
         }
     }
-
-
 }

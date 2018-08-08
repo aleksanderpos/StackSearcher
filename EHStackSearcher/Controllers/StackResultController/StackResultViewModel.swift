@@ -11,7 +11,7 @@ protocol StackResultViewModelProtocol {
 }
 class StackResultViewModel: StackResultViewModelProtocol {
     var question: StackQuestion = StackQuestion()
-
+    
     init(question: StackQuestion) {
         self.question = question
     }
