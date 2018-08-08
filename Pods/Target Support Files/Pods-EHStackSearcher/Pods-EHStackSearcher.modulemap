@@ -1,0 +1,6 @@
+module Pods_EHStackSearcher {
+  umbrella header "Pods-EHStackSearcher-umbrella.h"
+
+  export *
+  module * { export * }
+}
