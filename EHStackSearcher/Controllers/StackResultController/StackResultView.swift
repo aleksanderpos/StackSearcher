@@ -13,31 +13,45 @@ private struct Constants {
 }
 class StackResultView: UIView {
 
-    let questionLabel = UITextView()
-    let answerLabel = UITextView()
+    let questionTitleLabel = UILabel()
+    let questionTextView = UITextView()
+    let answerTextView = UITextView()
 
     func setupView(with question: StackQuestion) {
         backgroundColor = UIColor.white
-        addSubview(questionLabel)
-        addSubview(answerLabel)
+        addSubview(questionTitleLabel)
+        addSubview(questionTextView)
+        addSubview(answerTextView)
 
-        questionLabel.snp.makeConstraints { (make) in
-            make.top.equalToSuperview().offset(Constants.spacing)
+        questionTitleLabel.snp.makeConstraints { (make) in
+            make.top.equalTo(Constants.spacing)
+            make.leading.trailing.equalToSuperview()
+        }
+        questionTitleLabel.numberOfLines = 0
+        questionTitleLabel.textColor = UIColor.orange
+        questionTitleLabel.text = question.title?.htmlToString
+
+        questionTextView.snp.makeConstraints { (make) in
+            make.top.equalTo(questionTitleLabel.snp.bottom)
             make.leading.trailing.equalToSuperview()
             make.bottom.equalTo(snp.centerY)
         }
-        answerLabel.snp.makeConstraints { (make) in
-            make.top.equalTo(snp.centerY)
-            make.leading.trailing.bottom.equalToSuperview()
+
+        questionTextView.layer.borderColor = UIColor.orange.cgColor
+        questionTextView.layer.borderWidth = Constants.borderWidth
+        questionTextView.attributedText = question.body?.htmlToAttributedString
+
+        if let isAnswered = question.isAnswered, isAnswered {
+            answerTextView.snp.makeConstraints { (make) in
+                make.top.equalTo(snp.centerY)
+                make.leading.trailing.bottom.equalToSuperview()
+            }
+
+
+            answerTextView.attributedText = question.answer?.body?.htmlToAttributedString
+            answerTextView.layer.borderColor = UIColor.green.cgColor
+            answerTextView.layer.borderWidth = Constants.borderWidth
         }
-
-        questionLabel.layer.borderColor = UIColor.orange.cgColor
-        questionLabel.layer.borderWidth = Constants.borderWidth
-        questionLabel.attributedText = question.body?.htmlToAttributedString
-
-        answerLabel.attributedText = question.answer?.body?.htmlToAttributedString
-        answerLabel.layer.borderColor = UIColor.green.cgColor
-        answerLabel.layer.borderWidth = Constants.borderWidth
 
     }
 }

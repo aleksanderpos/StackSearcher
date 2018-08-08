@@ -44,6 +44,13 @@ class StackSearchViewController: UIViewController {
         navigationItem.hidesSearchBarWhenScrolling = false
         navigationItem.searchController = searchController
     }
+
+    private func openAnswer(for question: StackQuestion) {
+        DispatchQueue.main.async {
+            self.mainView.activityIndicator.stopAnimating()
+            self.navigationController?.pushViewController(StackResultViewController(view: StackResultView(), viewModel: StackResultViewModel(question: question)), animated: true)
+        }
+    }
 }
 extension StackSearchViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -55,6 +62,7 @@ extension StackSearchViewController: UITableViewDelegate, UITableViewDataSource 
         guard let titleText = viewModel.questions[indexPath.row].title else {
             return cell
         }
+        
         cell.textLabel?.text = titleText
         cell.textLabel?.textColor = UIColor.lightGray
         cell.textLabel?.numberOfLines = 0
@@ -69,23 +77,20 @@ extension StackSearchViewController: UITableViewDelegate, UITableViewDataSource 
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let selectedQuestion = viewModel.questions[indexPath.row]
-        mainView.activityIndicator.startAnimating()
         if let _ = selectedQuestion.isAnswered {
             if let _ = selectedQuestion.answer {
                 self.openAnswer(for: selectedQuestion)
             } else if let answerId = selectedQuestion.answerId {
+                mainView.activityIndicator.startAnimating()
                 viewModel.getAnswer(for: answerId) { (stackAnswer, error) in
                     self.viewModel.questions[indexPath.row].answer = stackAnswer
                     self.openAnswer(for: self.viewModel.questions[indexPath.row])
                 }
+            } else {
+                openAnswer(for: selectedQuestion)
             }
-        }
-    }
-
-    private func openAnswer(for question: StackQuestion) {
-        DispatchQueue.main.async {
-            self.mainView.activityIndicator.stopAnimating()
-            self.navigationController?.pushViewController(StackResultViewController(view: StackResultView(), viewModel: StackResultViewModel(question: question)), animated: true)
+        } else {
+            openAnswer(for: selectedQuestion)
         }
     }
 }
