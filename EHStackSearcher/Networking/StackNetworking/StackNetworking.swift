@@ -13,15 +13,17 @@ protocol StackNetworkingProtocol: class {
     func fetchStackAnswer(answerId: String, completion: @escaping BaseNetworkingCompletionHandler)
 }
 
-class StackNetworking: BaseNetworking, StackNetworkingProtocol {
+struct StackEndpoints {
+    static let questionQueryURL = "/2.2/search/advanced?order=desc&sort=activity&title={query}&site=stackoverflow&filter=!9Z(-wwYGT"
+    static let answerQueryURL = "/2.2/answers/{id}?order=desc&sort=activity&site=stackoverflow&filter=!9Z(-wzu0T"
+}
 
-    let baseURL = "https://api.stackexchange.com"
-    let questionQueryURL = "/2.2/search/advanced?order=desc&sort=activity&title={query}&site=stackoverflow&filter=!9Z(-wwYGT"
-    let answerQueryURL = "/2.2/answers/{id}?order=desc&sort=activity&site=stackoverflow&filter=!9Z(-wzu0T"
+class StackNetworking: BaseNetworking, StackNetworkingProtocol {
 
     func fetchStackQuestion(query: String, completion: @escaping BaseNetworkingCompletionHandler) {
         let finalQuery = query.replacingOccurrences(of: " ", with: "%20")
-        guard let properURL = URL(string: baseURL + questionQueryURL.replacingOccurrences(of: "{query}", with: finalQuery)) else {
+        
+        guard let properURL = URL(string: Endpoints.baseURL + StackEndpoints.questionQueryURL.replacingOccurrences(of: "{query}", with: finalQuery)) else {
             return
         }
         performRequest(with: properURL) { (json, error) in
@@ -30,7 +32,7 @@ class StackNetworking: BaseNetworking, StackNetworkingProtocol {
     }
 
     func fetchStackAnswer(answerId: String, completion: @escaping BaseNetworkingCompletionHandler) {
-        guard let properURL = URL(string: baseURL + answerQueryURL.replacingOccurrences(of: "{id}", with: answerId)) else {
+        guard let properURL = URL(string: Endpoints.baseURL + StackEndpoints.answerQueryURL.replacingOccurrences(of: "{id}", with: answerId)) else {
             return
         }
 

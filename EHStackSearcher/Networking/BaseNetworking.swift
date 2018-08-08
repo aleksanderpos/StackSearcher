@@ -14,6 +14,9 @@ typealias ErrorFromResponseCompletionHandler = (String?) -> Void
 public enum HTTPMethod : String {
     case get = "GET"
 }
+struct Endpoints {
+    static let baseURL = "https://api.stackexchange.com"
+}
 
 class BaseNetworking {
 
@@ -22,7 +25,7 @@ class BaseNetworking {
     func performRequest(with url: URL, completion: @escaping BaseNetworkingCompletionHandler) {
         let config = URLSessionConfiguration.default
         let session = URLSession(configuration: config)
-
+        task?.cancel()
         var urlRequest = URLRequest(url: url, cachePolicy: .reloadIgnoringLocalAndRemoteCacheData, timeoutInterval: 12.0)
         urlRequest.httpMethod = HTTPMethod.get.rawValue
 

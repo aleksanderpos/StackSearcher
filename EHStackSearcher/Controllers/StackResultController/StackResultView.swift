@@ -40,6 +40,7 @@ class StackResultView: UIView {
         questionTextView.layer.borderColor = UIColor.orange.cgColor
         questionTextView.layer.borderWidth = Constants.borderWidth
         questionTextView.attributedText = question.body?.htmlToAttributedString
+        questionTextView.isEditable = false
 
         if let isAnswered = question.isAnswered, isAnswered {
             answerTextView.snp.makeConstraints { (make) in
@@ -47,10 +48,10 @@ class StackResultView: UIView {
                 make.leading.trailing.bottom.equalToSuperview()
             }
 
-
             answerTextView.attributedText = question.answer?.body?.htmlToAttributedString
             answerTextView.layer.borderColor = UIColor.green.cgColor
             answerTextView.layer.borderWidth = Constants.borderWidth
+            answerTextView.isEditable = false
         }
 
     }
